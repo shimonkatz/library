@@ -53,6 +53,9 @@ public class UploadData implements CommandLineRunner{
                         build()
                 );
 
-        bookRepository.saveAll(books);
+        List<Book> bookList = bookRepository.findAll();
+        if (bookList.isEmpty()){
+            bookRepository.saveAll(books);
+        }
     }
 }

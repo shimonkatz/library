@@ -4,6 +4,7 @@ import com.example.library.entities.Book;
 import com.example.library.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,11 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     @Override
-    public List<Book> getBooks() {
+    public List<Book> getBooks(String bookName) {
+
+        if (StringUtils.hasText(bookName)){
+            return bookRepository.findBooksByNameIsLikeIgnoreCase(bookName);
+        }
         return bookRepository.findAll();
     }
 
@@ -32,4 +37,6 @@ public class BookServiceImpl implements BookService {
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
+
+
 }

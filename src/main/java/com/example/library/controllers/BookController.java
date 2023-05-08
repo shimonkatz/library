@@ -11,17 +11,20 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/api/v1/book")
+@RequestMapping(path = BookController.PATH)
 @RequiredArgsConstructor
 public class BookController {
 
+    public static final String PATH = "/api/v1/book";
+    public static final String ID= "/{id}";
     private final BookService bookService;
     @GetMapping
-    List<Book> getBooks(){
-        return bookService.getBooks();
+    List<Book> getBooks(@RequestParam(required = false) String bookName){
+
+        return bookService.getBooks(bookName);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(ID)
     ResponseEntity<Book> getBookById(@PathVariable Long id){
         Optional<Book> book = bookService.findById(id);
         return new ResponseEntity<>(book.get(), HttpStatus.OK);
@@ -33,7 +36,7 @@ public class BookController {
         return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(ID)
     void deleteBookById(@PathVariable Long id){
         bookService.deleteBookById(id);
     }

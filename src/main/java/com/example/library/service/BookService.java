@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BookService {
 
-    List<Book> getBooks();
+    List<Book> getBooks(String bookName);
 
     Optional<Book> findById(Long id);
 
