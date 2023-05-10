@@ -17,6 +17,9 @@ public class BookController {
 
     public static final String PATH = "/api/v1/book";
     public static final String ID= "/{id}";
+
+    public static final String ISBN = "/isbn/{isbn}";
+
     private final BookService bookService;
     @GetMapping
     List<Book> getBooks(@RequestParam(required = false) String bookName){
@@ -25,9 +28,13 @@ public class BookController {
     }
 
     @GetMapping(ID)
-    ResponseEntity<Book> getBookById(@PathVariable Long id){
-        Optional<Book> book = bookService.findById(id);
-        return new ResponseEntity<>(book.get(), HttpStatus.OK);
+    Book getBookById(@PathVariable Long id){
+        return bookService.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(ISBN)
+    Book getBookByIsbn(@PathVariable String isbn){
+        return bookService.findByIsbn(isbn).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping

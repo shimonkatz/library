@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.ISBN;
 
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @ISBN
     private String isbn;
 
     private String author;

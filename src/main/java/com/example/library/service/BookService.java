@@ -11,6 +11,8 @@ public interface BookService {
 
     Optional<Book> findById(Long id);
 
+    Optional<Book> findByIsbn(String isbn);
+
     Book createBook(Book book);
 
     void deleteBookById(Long id);

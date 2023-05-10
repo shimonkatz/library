@@ -29,6 +29,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Optional<Book> findByIsbn(String isbn) {
+        return bookRepository.findBookByIsbn(isbn);
+    }
+
+    @Override
     public Book createBook(Book book) {
         return bookRepository.save(book);
     }
