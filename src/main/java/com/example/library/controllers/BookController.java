@@ -5,6 +5,7 @@ import com.example.library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,13 +39,15 @@ public class BookController {
     }
 
     @PostMapping
-    ResponseEntity<Book> createBook(@RequestBody Book book){
+    ResponseEntity<Book> createBook(@Validated @RequestBody Book book){
         Book savedBook = bookService.createBook(book);
         return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
     }
 
     @DeleteMapping(ID)
     void deleteBookById(@PathVariable Long id){
-        bookService.deleteBookById(id);
+        if (getBookById(id) != null){
+            bookService.deleteBookById(id);
+        }
     }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.ISBN;
@@ -23,11 +25,13 @@ public class Book {
     private Long id;
     @ISBN
     private String isbn;
-
+    @NotNull
+    @NotBlank
     private String author;
-
+    @NotNull
+    @NotBlank
     private String name;
-
+    @NotNull
     private Integer available;
 
     @Override
