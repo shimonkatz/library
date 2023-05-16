@@ -1,7 +1,9 @@
 package com.example.library.bootstrap;
 
 import com.example.library.entities.Book;
+import com.example.library.entities.Reader;
 import com.example.library.repositories.BookRepository;
+import com.example.library.repositories.ReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,13 +12,15 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UploadData implements CommandLineRunner{
+public class UploadData implements CommandLineRunner {
 
     private final BookRepository bookRepository;
+    private final ReaderRepository readerRepository;
 
     @Override
     public void run(String... args) throws Exception {
-           loadBooks();
+        loadBooks();
+        loadReaders();
     }
 
     private void loadBooks() {
@@ -51,11 +55,41 @@ public class UploadData implements CommandLineRunner{
                         author("Nicolas Mahler").
                         available(3).
                         build()
-                );
+        );
 
         List<Book> bookList = bookRepository.findAll();
-        if (bookList.isEmpty()){
+        if (bookList.isEmpty()) {
             bookRepository.saveAll(books);
+        }
+    }
+
+    private void loadReaders() {
+        List<Reader> readers = List.of(
+                Reader.builder()
+                        .firstName("Yael")
+                        .lastName("Katz")
+                        .build(),
+                Reader.builder()
+                        .firstName("Shimon")
+                        .lastName("Katz")
+                        .build(),
+                Reader.builder()
+                        .firstName("Noam")
+                        .lastName("Katz")
+                        .build(),
+                Reader.builder()
+                        .firstName("Noam")
+                        .lastName("Levy")
+                        .build(),
+                Reader.builder()
+                        .firstName("Yael")
+                        .lastName("Levy")
+                        .build()
+        );
+
+        List<Reader> readerList = readerRepository.findAll();
+        if (readerList.isEmpty()) {
+            readerRepository.saveAll(readers);
         }
     }
 }
