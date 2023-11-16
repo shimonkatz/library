@@ -1,6 +1,8 @@
 package com.example.library.controllers;
 
+import com.example.library.entities.Book;
 import com.example.library.entities.Reader;
+import com.example.library.service.LendingService;
 import com.example.library.service.ReaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,7 @@ import java.util.Optional;
 public class ReaderController {
 
     public static final String PATH = "/api/v1/reader";
-    public static final String ID= "/{id}";
+    public static final String ID = "/{id}";
 
     private final ReaderService readerService;
 
@@ -34,5 +36,9 @@ public class ReaderController {
     public void deleteReaderById(@PathVariable Long id) {
         readerService.deleteReaderById(id);
     }
+
+
+
+
 
 }

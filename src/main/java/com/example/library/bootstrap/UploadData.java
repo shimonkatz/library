@@ -23,6 +23,7 @@ public class UploadData implements CommandLineRunner {
         loadReaders();
     }
 
+    // load list of books
     private void loadBooks() {
         List<Book> books = List.of(
                 Book.builder().

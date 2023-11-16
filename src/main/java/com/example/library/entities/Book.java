@@ -1,16 +1,17 @@
 package com.example.library.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.ISBN;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,11 +20,14 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ISBN
+//    @ISBN
+    @NotNull
+    @NotBlank
     private String isbn;
     @NotNull
     @NotBlank
@@ -33,6 +37,11 @@ public class Book {
     private String name;
     @NotNull
     private Integer available;
+
+//    @JsonManagedReference
+    @Builder.Default
+    @OneToMany(mappedBy = "book")
+    private Set<Lending> lendingSet = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

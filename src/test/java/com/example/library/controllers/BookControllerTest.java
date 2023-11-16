@@ -2,15 +2,12 @@ package com.example.library.controllers;
 
 import com.example.library.entities.Book;
 import com.example.library.service.BookService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -28,7 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(BookController.class)
-class BookControllerTest {
+class
+BookControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -77,7 +75,9 @@ class BookControllerTest {
                         .queryParam("bookName", "%book%")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(1)));
+                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$[0].author", is("Hannah Templer")))
+                .andExpect(jsonPath("$[0].name").value("Cosmoknights (Book One)"));
     }
 
     @Test
@@ -91,8 +91,9 @@ class BookControllerTest {
 
         given(bookService.findByIsbn(any())).willReturn(Optional.of(book));
 
-        mockMvc.perform(get(BookController.PATH +BookController.ISBN,"978-1-60309-454-2"))
-                .andExpect(jsonPath("$.isbn", is("978-1-60309-454-2")));;
+        mockMvc.perform(get(BookController.PATH + BookController.ISBN, "978-1-60309-454-2"))
+                .andExpect(jsonPath("$.isbn", is("978-1-60309-454-2")));
+        ;
     }
 
     @Test
@@ -106,26 +107,27 @@ class BookControllerTest {
 
         given(bookService.findByIsbn(any())).willThrow(NotFoundException.class);
 
-        mockMvc.perform(get(BookController.PATH +BookController.ISBN,"978-1-60309-454-2"))
-                .andExpect(status().isNotFound());;
+        mockMvc.perform(get(BookController.PATH + BookController.ISBN, "978-1-60309-454-2"))
+                .andExpect(status().isNotFound());
+        ;
     }
 
     @Test
     void saveBook() throws Exception {
-      Book book = Book.builder().
-              isbn("978-1-60309-454-2").
-              name("Cosmoknights (Book One)").
-              author("Hannah Templer").
-              available(2).
-              build();
+        Book book = Book.builder().
+                isbn("978-1-60309-454-2").
+                name("Cosmoknights (Book One)").
+                author("Hannah Templer").
+                available(2).
+                build();
 
-      given(bookService.createBook(any())).willReturn(book);
+        given(bookService.createBook(any())).willReturn(book);
 
-      mockMvc.perform(post(BookController.PATH)
-              .accept(MediaType.APPLICATION_JSON)
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(objectMapper.writeValueAsString(book)))
-              .andExpect(status().isCreated());
+        mockMvc.perform(post(BookController.PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(status().isCreated());
     }
 
     @Test
